@@ -29,6 +29,11 @@ class MagiDownloadStrategy < CurlDownloadStrategy
 
   private
 
+  def _curl_args
+    args = ["--header", "Authorization: token #{@github_token}"]
+    args
+  end
+  
   def set_github_token
    @github_token = ENV["HOMEBREW_GITHUB_API_TOKEN"]
    unless @github_token
