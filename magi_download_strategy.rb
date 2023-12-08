@@ -35,9 +35,9 @@ class MagiDownloadStrategy < CurlDownloadStrategy
   end
 
   def set_github_token
-   @github_token = ENV["HOMEBREW_GITHUB_PERSONAL_ACCESS_TOKEN"]
+   @github_token = ENV["MAGI_GH_ACCESS_TOKEN"]
    unless @github_token
-     raise CurlDownloadStrategyError, "Environment variable HOMEBREW_GITHUB_PERSONAL_ACCESS_TOKEN is required."
+     raise CurlDownloadStrategyError, "Environment variable MAGI_GH_ACCESS_TOKEN is required."
    end
    validate_github_repository_access!
  end
@@ -48,7 +48,7 @@ class MagiDownloadStrategy < CurlDownloadStrategy
    # We only handle HTTPNotFoundError here,
    # because AuthenticationFailedError is handled within util/github.
    message = <<~EOS
-     HOMEBREW_GITHUB_PERSONAL_ACCESS_TOKEN can not access the repository: #{@owner}/#{@repo}
+     MAGI_GH_ACCESS_TOKEN can not access the repository: #{@owner}/#{@repo}
      This token may not have permission to access the repository or the url of formula may be incorrect.
    EOS
    raise CurlDownloadStrategyError, message
