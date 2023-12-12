@@ -15,7 +15,7 @@ jobs:
           git config --global user.email "matt@mavenagi.com"
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: main
           token: ${{ secrets.GH_TOKEN }}
