@@ -17,6 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          repository: mavenagi/homebrew-tap
           ref: main
           token: ${{ secrets.GH_TOKEN }}
       
@@ -32,10 +33,10 @@ jobs:
         run: git add Formula/magi.rb
 
       - name: Commit package.json files
-        run: git commit --no-verify --message "Bump version to v$PKG_VERSION [skip ci]"
+        run: git commit --no-verify --message "Bump version to v${{ github.event.client_payload.version}} [skip ci]"
 
       - name: Tag the version
-        run: git tag -a v$PKG_VERSION -m v$PKG_VERSION
+        run: git tag -a "v${{ github.event.client_payload.version}}" -m "v${{ github.event.client_payload.version}}"
 
       - name: Push the commit
         run: git push origin main
