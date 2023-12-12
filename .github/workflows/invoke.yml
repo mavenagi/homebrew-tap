@@ -1,0 +1,23 @@
+name: Invoke Version
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  invoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Invoke
+        run: |
+            curl -H "Accept: application/vnd.github.everest-preview+json" \
+            -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+            --request POST \
+            --data '{  \
+              "event_type": "release", \
+              "client_payload": { \
+                "version": "0.1.1" \
+                "sha" : "abcdefg" \
+                }
+              }' \
+              https://api.github.com/repos/mavenagi/homebrew-tap/dispatches

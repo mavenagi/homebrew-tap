@@ -1,0 +1,38 @@
+name: Publish Version
+on:
+  repository_dispatch:
+    types: [release]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Template the new version
+        uses: jaywcjlove/action-ejs@main
+        with:
+          template-file: magi.rb.ejs
+          output: Formula/magi.rb
+          vars: |
+            { "version": "${{ github.event.client_payload.version }}", "sha": "${{ github.event.client_payload.sha }}" }
+
+      - name: Add new version to git
+        run: git add Formula/magi.rb
+
+      - name: Commit package.json files
+        run: git commit --no-verify --message "Bump version to v$PKG_VERSION [skip ci]"
+
+      - name: Tag the version
+        run: git tag -a v$PKG_VERSION -m v$PKG_VERSION
+
+      - name: Push the commit
+        run: git push origin main
+
+      - name: Push the tags
+        run: git push --follow-tags --set-upstream origin main
+
+      
