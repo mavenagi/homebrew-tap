@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      
+      - name: Configure git identity
+        run: |
+          git config --global user.name "Matt Flaherty"
+          git config --global user.email "matt@mavenagi.com"
 
       - name: Template the new version
         uses: jaywcjlove/action-ejs@main
@@ -34,5 +39,3 @@ jobs:
 
       - name: Push the tags
         run: git push --follow-tags --set-upstream origin main
-
-      
