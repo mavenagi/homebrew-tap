@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Invoke
         run: |
-            curl -H "Accept: application/vnd.github.everest-preview+json" \
+            curl -H "Accept: application/vnd.github+json" \
             -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
             --request POST \
             --data '{  \
