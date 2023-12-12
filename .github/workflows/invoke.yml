@@ -18,6 +18,6 @@ jobs:
               "client_payload": { \
                 "version": "0.1.1" \
                 "sha" : "abcdefg" \
-                }
+                } \
               }' \
               https://api.github.com/repos/mavenagi/homebrew-tap/dispatches
