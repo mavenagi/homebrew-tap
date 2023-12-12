@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Invoke
-        run: 'curl -H \"Accept: application/vnd.github+json\" -H \"Authorization: token ${{ secrets.GH_TOKEN }}\" --request POST --data \"{  \"event_type\": \"release\", \"client_payload\": { \"version\": \"0.10.4\", \"sha\" : \"abcdefg\" } }\" https://api.github.com/repos/mavenagi/homebrew-tap/dispatches'
+        run: 'curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GH_TOKEN }}" --request POST --data "{  \"event_type\": \"release\", \"client_payload\": { \"version\": \"0.10.4\", \"sha\" : \"abcdef\" } }" https://api.github.com/repos/mavenagi/homebrew-tap/dispatches'
