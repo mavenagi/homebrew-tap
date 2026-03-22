@@ -2,12 +2,12 @@
 set -euo pipefail
 
 # Updates Formula/magi.rb with a new version and sha256.
-# Usage: update-formula <version> <sha256>
+# Usage: update <version> <sha256>
 #
 # Run from the root of the homebrew-tap repository.
 
 if [[ $# -lt 2 ]]; then
-	echo "usage: update-formula <version> <sha256>" >&2
+	echo "usage: update <version> <sha256>" >&2
 	exit 1
 fi
 

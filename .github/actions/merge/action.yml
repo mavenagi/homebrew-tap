@@ -1,0 +1,21 @@
+name: Merge Formula
+description: Commits, tags, and pushes a formula update.
+
+inputs:
+  version:
+    description: The new version (without v prefix)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Commit, tag, and push
+      shell: bash
+      run: |
+        VERSION="${{ inputs.version }}"
+        git add Formula/magi.rb
+        git commit --no-verify --message "Bump version to v${VERSION} [skip ci]"
+        git tag -a "v${VERSION}" -m "v${VERSION}"
+        git push origin main
+        git push --follow-tags --set-upstream origin main
+        echo "Published v${VERSION}"

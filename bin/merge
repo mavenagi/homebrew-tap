@@ -2,12 +2,12 @@
 set -euo pipefail
 
 # Commits, tags, and pushes a formula update.
-# Usage: publish <version>
+# Usage: merge <version>
 #
 # Run from the root of the homebrew-tap repository after update-formula.
 
 if [[ $# -lt 1 ]]; then
-	echo "usage: publish <version>" >&2
+	echo "usage: merge <version>" >&2
 	exit 1
 fi
 

@@ -20,10 +20,12 @@ jobs:
           token: ${{ secrets.MAGI_CLI_PUBLISH_TOKEN }}
 
       - name: Update version and sha in formula
-        run: |
-          bin/update-formula \
-            "${{ github.event.client_payload.version }}" \
-            "${{ github.event.client_payload.sha }}"
+        uses: ./.github/actions/update
+        with:
+          version: ${{ github.event.client_payload.version }}
+          sha256: ${{ github.event.client_payload.sha }}
 
       - name: Commit, tag, and push
-        run: bin/publish "${{ github.event.client_payload.version }}"
+        uses: ./.github/actions/merge
+        with:
+          version: ${{ github.event.client_payload.version }}

@@ -1,0 +1,23 @@
+name: Update Formula
+description: Updates Formula/magi.rb with a new version and sha256.
+
+inputs:
+  version:
+    description: The new version (without v prefix)
+    required: true
+  sha256:
+    description: SHA256 of the release tarball
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Update version and sha in formula
+      shell: bash
+      run: |
+        VERSION="${{ inputs.version }}"
+        SHA="${{ inputs.sha256 }}"
+        FORMULA="Formula/magi.rb"
+        sed -i "s|releases/download/v[^/]*/magi-[^.]*\.[^.]*\.[^/]*\.tar\.gz|releases/download/v${VERSION}/magi-${VERSION}.tar.gz|" "$FORMULA"
+        sed -i "s|sha256 \".*\"|sha256 \"${SHA}\"|" "$FORMULA"
+        echo "Updated $FORMULA to version=${VERSION} sha256=${SHA}"
