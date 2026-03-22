@@ -4,7 +4,7 @@ on:
     types: [publish]
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Configure git identity
