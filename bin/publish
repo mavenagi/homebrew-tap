@@ -1,0 +1,22 @@
+#!/bin/bash
+set -euo pipefail
+
+# Commits, tags, and pushes a formula update.
+# Usage: publish <version>
+#
+# Run from the root of the homebrew-tap repository after update-formula.
+
+if [[ $# -lt 1 ]]; then
+	echo "usage: publish <version>" >&2
+	exit 1
+fi
+
+version="$1"
+
+git add Formula/magi.rb
+git commit --no-verify --message "Bump version to v${version} [skip ci]"
+git tag -a "v${version}" -m "v${version}"
+git push origin main
+git push --follow-tags --set-upstream origin main
+
+echo "Published v${version}"

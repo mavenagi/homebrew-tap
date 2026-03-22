@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+
+# Updates Formula/magi.rb with a new version and sha256.
+# Usage: update-formula <version> <sha256>
+#
+# Run from the root of the homebrew-tap repository.
+
+if [[ $# -lt 2 ]]; then
+	echo "usage: update-formula <version> <sha256>" >&2
+	exit 1
+fi
+
+version="$1"
+sha256="$2"
+formula="Formula/magi.rb"
+
+if [[ ! -f "$formula" ]]; then
+	echo "error: $formula not found (run from homebrew-tap root)" >&2
+	exit 1
+fi
+
+sed -i "s|releases/download/v[^/]*/magi-[^.]*\.[^.]*\.[^/]*\.tar\.gz|releases/download/v${version}/magi-${version}.tar.gz|" "$formula"
+sed -i "s|sha256 \".*\"|sha256 \"${sha256}\"|" "$formula"
+
+echo "Updated $formula"
+echo "  version=$version"
+echo "  sha256=$sha256"

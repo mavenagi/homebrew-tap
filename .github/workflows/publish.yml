@@ -1,0 +1,29 @@
+name: Publish Version
+on:
+  repository_dispatch:
+    types: [publish]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure git identity
+        run: |
+          git config --global user.name "Maven AGI"
+          git config --global user.email "info@mavenagi.com"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          repository: mavenagi/homebrew-tap
+          ref: main
+          token: ${{ secrets.MAGI_CLI_PUBLISH_TOKEN }}
+
+      - name: Update version and sha in formula
+        run: |
+          bin/update-formula \
+            "${{ github.event.client_payload.version }}" \
+            "${{ github.event.client_payload.sha }}"
+
+      - name: Commit, tag, and push
+        run: bin/publish "${{ github.event.client_payload.version }}"
