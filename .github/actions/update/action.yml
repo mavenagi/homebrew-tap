@@ -18,6 +18,6 @@ runs:
         VERSION="${{ inputs.version }}"
         SHA="${{ inputs.sha256 }}"
         FORMULA="Formula/magi.rb"
-        sed -i "s|releases/download/v[^/]*/magi-[^.]*\.[^.]*\.[^/]*\.tar\.gz|releases/download/v${VERSION}/magi-${VERSION}.tar.gz|" "$FORMULA"
+        sed -i "s|releases/download/magi-v[^/]*/magi-[^-]*-macos\.tar\.gz|releases/download/magi-v${VERSION}/magi-${VERSION}-macos.tar.gz|" "$FORMULA"
         sed -i "s|sha256 \".*\"|sha256 \"${SHA}\"|" "$FORMULA"
         echo "Updated $FORMULA to version=${VERSION} sha256=${SHA}"
