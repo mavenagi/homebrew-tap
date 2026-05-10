@@ -27,14 +27,28 @@ jobs:
         env:
           INCOMING: ${{ github.event.client_payload.version }}
         run: |
-          CURRENT=$(grep -oE 'magi-v[0-9]+\.[0-9]+\.[0-9]+' Formula/magi.rb | head -1 | sed 's/^magi-v//')
+          set -euo pipefail
+
+          if ! npx --yes semver@7 "$INCOMING" >/dev/null 2>&1; then
+            echo "::error::Incoming version '${INCOMING}' is not a valid semver."
+            exit 1
+          fi
+
+          # `|| true` — grep exits 1 on no-match under set -e.
+          CURRENT=$(grep -oE 'releases/download/magi-v[^/]+' Formula/magi.rb | head -1 | sed 's|.*magi-v||' || true)
           if [[ -z "$CURRENT" ]]; then
-            echo "No current version detected in formula — accepting first publish ${INCOMING}."
+            echo "No current version in formula — accepting first publish ${INCOMING}."
             exit 0
           fi
-          HIGHEST=$(printf '%s\n%s\n' "$CURRENT" "$INCOMING" | sort -V | tail -1)
-          if [[ "$HIGHEST" != "$INCOMING" || "$INCOMING" == "$CURRENT" ]]; then
-            echo "::error::Incoming version ${INCOMING} is not greater than current formula ${CURRENT}. Refusing to publish a downgrade."
+
+          if ! npx --yes semver@7 "$CURRENT" >/dev/null 2>&1; then
+            echo "::error::Current formula version '${CURRENT}' is not a valid semver. Formula may be corrupted."
+            exit 1
+          fi
+
+          # --include-prerelease — semver's default excludes prereleases from non-prerelease ranges.
+          if ! npx --yes semver@7 --include-prerelease --range ">$CURRENT" "$INCOMING" >/dev/null 2>&1; then
+            echo "::error::Incoming ${INCOMING} is not greater than current formula ${CURRENT}. Refusing downgrade."
             exit 1
           fi
           echo "Incoming ${INCOMING} > current ${CURRENT}. Proceeding."
