@@ -3,11 +3,6 @@ on:
   repository_dispatch:
     types: [publish]
 
-# Serialize publishes. Two dispatch events arriving close together (e.g., from
-# back-to-back highlander releases) would otherwise both try to update the
-# formula and push concurrently — the second push fails non-fast-forward,
-# causing a flaky workflow failure. cancel-in-progress is false so an
-# in-flight publish always finishes before the next one starts.
 concurrency:
   group: homebrew-tap-publish
   cancel-in-progress: false
@@ -28,10 +23,6 @@ jobs:
           ref: main
           token: ${{ secrets.MAGI_CLI_PUBLISH_TOKEN }}
 
-      # Defense-in-depth: refuse dispatches that would downgrade the formula.
-      # Highlander's release workflow already enforces semver-greater before
-      # publishing, but a manual `gh api dispatches` call or a workflow bug
-      # could still send us a stale or lower version. Catch it here too.
       - name: Verify incoming version is greater than current formula
         env:
           INCOMING: ${{ github.event.client_payload.version }}
