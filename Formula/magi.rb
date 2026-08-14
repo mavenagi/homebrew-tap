@@ -3,8 +3,8 @@ require_relative "../magi_download_strategy.rb"
 
 class Magi < Formula
   homepage "https://docs.mavenagi.com"
-  url "https://github.com/mavenagi/highlander/releases/download/magi-v1.22.0/magi-1.22.0-macos.tar.gz", :using => MagiDownloadStrategy
-  sha256 "170250c4c79bd9ba5aa5ff1d84251394b93fdaf60c38bec60f2eae5c8de02d4f"
+  url "https://github.com/mavenagi/highlander/releases/download/magi-v1.22.1/magi-1.22.1-macos.tar.gz", :using => MagiDownloadStrategy
+  sha256 "75c409537aed68bee35a7d0cd5835fb6f94ff86c5cfce9f43c2921b614a3c7b8"
   
   def install
     bin.install "magi"
